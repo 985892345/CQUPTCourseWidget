@@ -14,3 +14,4 @@ dependencyResolutionManagement {
 }
 rootProject.name = "CQUPTCourseWidget"
 include ':app'
+include ':widget'
