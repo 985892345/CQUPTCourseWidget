@@ -11,7 +11,7 @@ import androidx.glance.appwidget.action.ActionCallback
  * @author 985892345
  * 2022/11/17 16:44
  */
-class RefreshAction : ActionCallback {
+internal class SimpleWidgetRefreshAction : ActionCallback {
   override suspend fun onAction(
     context: Context,
     glanceId: GlanceId,

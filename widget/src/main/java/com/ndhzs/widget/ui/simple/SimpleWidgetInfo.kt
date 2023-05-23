@@ -9,18 +9,21 @@ import kotlinx.serialization.Serializable
  * @date 2022/11/17 8:36
  */
 @Serializable
-sealed interface SimpleInfo {
+internal sealed interface SimpleWidgetInfo {
   
   @Serializable
-  object Unloaded : SimpleInfo
+  object Unloaded : SimpleWidgetInfo
+  
+  @Serializable
+  object Loading : SimpleWidgetInfo
   
   @Serializable
   data class Available(
     val time: String,
     val title: String,
     val content: String
-  ) : SimpleInfo
+  ) : SimpleWidgetInfo
   
   @Serializable
-  data class Unavailable(val message: String) : SimpleInfo
+  data class Unavailable(val message: String) : SimpleWidgetInfo
 }

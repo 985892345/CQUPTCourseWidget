@@ -1,4 +1,4 @@
-package com.ndhzs.widget.ui.simple
+package com.ndhzs.widget.ui.week
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -17,13 +17,13 @@ import java.io.OutputStream
  * @author 985892345
  * @date 2022/11/17 8:43
  */
-object SimpleInfoStateDefinition : GlanceStateDefinition<SimpleInfo> {
+internal object WeekWidgetInfoStateDefinition : GlanceStateDefinition<WeekWidgetInfo> {
   
-  private const val DATA_STORE_FILENAME = "oneInfo"
+  private val DATA_STORE_FILENAME = WeekWidgetInfo::class.java.simpleName
   
   private val Context.datastore by dataStore(DATA_STORE_FILENAME, OneInfoSerializer)
   
-  override suspend fun getDataStore(context: Context, fileKey: String): DataStore<SimpleInfo> {
+  override suspend fun getDataStore(context: Context, fileKey: String): DataStore<WeekWidgetInfo> {
     return context.datastore
   }
   
@@ -31,22 +31,22 @@ object SimpleInfoStateDefinition : GlanceStateDefinition<SimpleInfo> {
     return context.dataStoreFile(DATA_STORE_FILENAME)
   }
   
-  object OneInfoSerializer : Serializer<SimpleInfo> {
+  object OneInfoSerializer : Serializer<WeekWidgetInfo> {
     
-    override val defaultValue: SimpleInfo
-      get() = SimpleInfo.Unloaded
+    override val defaultValue: WeekWidgetInfo
+      get() = WeekWidgetInfo.Unloaded
   
-    override suspend fun readFrom(input: InputStream): SimpleInfo {
+    override suspend fun readFrom(input: InputStream): WeekWidgetInfo {
       return Json.decodeFromString(
-        SimpleInfo.serializer(),
+        WeekWidgetInfo.serializer(),
         input.readBytes().decodeToString()
       )
     }
   
-    override suspend fun writeTo(t: SimpleInfo, output: OutputStream) {
+    override suspend fun writeTo(t: WeekWidgetInfo, output: OutputStream) {
       output.use {
         it.write(
-          Json.encodeToString(SimpleInfo.serializer(), t).encodeToByteArray()
+          Json.encodeToString(WeekWidgetInfo.serializer(), t).encodeToByteArray()
         )
       }
     }

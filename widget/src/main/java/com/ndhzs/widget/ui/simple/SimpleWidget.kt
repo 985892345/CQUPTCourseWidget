@@ -1,16 +1,17 @@
 package com.ndhzs.widget.ui.simple
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.ExperimentalUnitApi
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.action.clickable
+import androidx.glance.appwidget.CircularProgressIndicator
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.action.actionRunCallback
-import androidx.glance.appwidget.cornerRadius
+import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.currentState
 import androidx.glance.layout.*
@@ -18,7 +19,6 @@ import androidx.glance.state.GlanceStateDefinition
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
-import com.ndhzs.widget.utils.getTodayWeekNumStr
 
 /**
  * .
@@ -29,59 +29,131 @@ import com.ndhzs.widget.utils.getTodayWeekNumStr
 internal class SimpleWidget : GlanceAppWidget() {
   
   override val stateDefinition: GlanceStateDefinition<*>
-    get() = SimpleInfoStateDefinition
+    get() = SimpleWidgetInfoStateDefinition
   
-  @OptIn(ExperimentalUnitApi::class)
+  override suspend fun provideGlance(context: Context, id: GlanceId) {
+    SimpleWidgetWorker.enqueue(context, true)
+    provideContent {
+      Content()
+    }
+  }
+  
   @Composable
-  override fun Content() {
-    val data = when (val simpleInfo = currentState<SimpleInfo>()) {
-      SimpleInfo.Unloaded -> {
-        Triple(getTodayWeekNumStr(), "点击刷新", "")
+  private fun Content() {
+    when (val simpleInfo = currentState<SimpleWidgetInfo>()) {
+      SimpleWidgetInfo.Unloaded -> {
+        UnloadedContent()
       }
-      is SimpleInfo.Available -> {
-        Triple(simpleInfo.time, simpleInfo.title, simpleInfo.content)
+      
+      SimpleWidgetInfo.Loading -> {
+        Box(contentAlignment = Alignment.Center) {
+          CircularProgressIndicator()
+        }
       }
-      is SimpleInfo.Unavailable -> {
-        Triple(getTodayWeekNumStr(), "出现错误", "点击刷新试试 >_<")
+      
+      is SimpleWidgetInfo.Available -> {
+        AvailableContent(
+          time = simpleInfo.time,
+          title = simpleInfo.title,
+          content = simpleInfo.content
+        )
+      }
+      
+      is SimpleWidgetInfo.Unavailable -> {
+        UnavailableContent()
       }
     }
+  }
+  
+  @Composable
+  private fun UnloadedContent() {
+    Text(
+      text = "点击刷新课表",
+      modifier = GlanceModifier
+        .background(Color.Transparent)
+        .clickable(actionRunCallback<SimpleWidgetRefreshAction>()),
+      style = TextStyle(
+        color = ColorProvider(Color.White),
+        fontSize = 26.sp
+      )
+    )
+  }
+  
+  @Composable
+  fun AvailableContent(
+    time: String,
+    title: String,
+    content: String
+  ) {
+    Column(
+      modifier = GlanceModifier
+        .wrapContentWidth()
+        .wrapContentHeight()
+        .background(Color.Transparent)
+        .padding(horizontal = 10.dp)
+        .clickable(actionRunCallback<SimpleWidgetRefreshAction>()),
+      verticalAlignment = Alignment.CenterVertically
+    ) {
+      Text(
+        text = time,
+        modifier = GlanceModifier.background(Color.Transparent),
+        style = TextStyle(
+          color = ColorProvider(Color.White),
+          fontSize = 14.sp
+        ),
+        maxLines = 1
+      )
+      Text(
+        text = title,
+        modifier = GlanceModifier.background(Color.Transparent),
+        style = TextStyle(
+          color = ColorProvider(Color.White),
+          fontSize = 18.sp
+        ),
+        maxLines = 1
+      )
+      Spacer(
+        GlanceModifier
+          .height(0.8.dp)
+          .width(140.dp)
+          .background(Color.White)
+      )
+      Text(
+        text = content,
+        modifier = GlanceModifier.background(Color.Transparent),
+        style = TextStyle(
+          color = ColorProvider(Color.White),
+          fontSize = 16.sp
+        ),
+        maxLines = 1
+      )
+    }
+  }
+  
+  @Composable
+  private fun UnavailableContent() {
     Column(
       modifier = GlanceModifier
         .wrapContentWidth()
         .fillMaxHeight()
         .background(Color.Transparent)
-        .cornerRadius(10.dp)
-        .clickable(actionRunCallback<RefreshAction>()),
+        .clickable(actionRunCallback<SimpleWidgetRefreshAction>()),
       verticalAlignment = Alignment.CenterVertically
     ) {
       Text(
-        text = data.first,
+        text = "出现错误",
         modifier = GlanceModifier.background(Color.Transparent),
         style = TextStyle(
           color = ColorProvider(Color.White),
-          fontSize = TextUnit(14F, TextUnitType.Sp)
+          fontSize = 20.sp
         )
       )
       Text(
-        text = data.second,
+        text = "点击刷新试试 >_<",
         modifier = GlanceModifier.background(Color.Transparent),
         style = TextStyle(
           color = ColorProvider(Color.White),
-          fontSize = TextUnit(18F, TextUnitType.Sp)
-        )
-      )
-      Spacer(
-        GlanceModifier
-          .height(1.dp)
-          .fillMaxWidth()
-          .background(Color(0x7EEEEEEE))
-      )
-      Text(
-        text = data.third,
-        modifier = GlanceModifier.background(Color.Transparent),
-        style = TextStyle(
-          color = ColorProvider(Color.White),
-          fontSize = TextUnit(16F, TextUnitType.Sp)
+          fontSize = 18.sp
         )
       )
     }

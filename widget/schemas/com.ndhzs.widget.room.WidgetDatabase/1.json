@@ -2,18 +2,12 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8789a70416f82767b6ba8091adcddd0a",
+    "identityHash": "a164979acf515a546be3de424d1d15ef",
     "entities": [
       {
-        "tableName": "widget_item",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` TEXT NOT NULL, `rank` INTEGER NOT NULL, `week` INTEGER NOT NULL, `weekNum` INTEGER NOT NULL, `beginLesson` INTEGER NOT NULL, `period` INTEGER NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL)",
+        "tableName": "widget_item_content",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rank` INTEGER NOT NULL, `week` INTEGER NOT NULL, `weekNum` TEXT NOT NULL, `start` TEXT NOT NULL, `period` INTEGER NOT NULL, `title` TEXT NOT NULL, `content` TEXT NOT NULL, `itemId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, FOREIGN KEY(`rank`) REFERENCES `widget_item_rank`(`rank`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
-          {
-            "fieldPath": "key",
-            "columnName": "key",
-            "affinity": "TEXT",
-            "notNull": true
-          },
           {
             "fieldPath": "rank",
             "columnName": "rank",
@@ -29,13 +23,13 @@
           {
             "fieldPath": "weekNum",
             "columnName": "weekNum",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
-            "fieldPath": "beginLesson",
-            "columnName": "beginLesson",
-            "affinity": "INTEGER",
+            "fieldPath": "start",
+            "columnName": "start",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -57,8 +51,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "id",
-            "columnName": "id",
+            "fieldPath": "itemId",
+            "columnName": "itemId",
             "affinity": "INTEGER",
             "notNull": true
           }
@@ -66,27 +60,71 @@
         "primaryKey": {
           "autoGenerate": true,
           "columnNames": [
-            "id"
+            "itemId"
           ]
         },
         "indices": [
           {
-            "name": "index_widget_item_key",
+            "name": "index_widget_item_content_rank",
             "unique": false,
             "columnNames": [
-              "key"
+              "rank"
             ],
             "orders": [],
-            "createSql": "CREATE INDEX IF NOT EXISTS `index_widget_item_key` ON `${TABLE_NAME}` (`key`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_widget_item_content_rank` ON `${TABLE_NAME}` (`rank`)"
           }
         ],
+        "foreignKeys": [
+          {
+            "table": "widget_item_rank",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "rank"
+            ],
+            "referencedColumns": [
+              "rank"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "widget_item_rank",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`rank` INTEGER NOT NULL, `bgColor` INTEGER NOT NULL, `tvColor` INTEGER NOT NULL, PRIMARY KEY(`rank`))",
+        "fields": [
+          {
+            "fieldPath": "rank",
+            "columnName": "rank",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "bgColor",
+            "columnName": "bgColor",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "tvColor",
+            "columnName": "tvColor",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "rank"
+          ]
+        },
+        "indices": [],
         "foreignKeys": []
       }
     ],
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8789a70416f82767b6ba8091adcddd0a')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'a164979acf515a546be3de424d1d15ef')"
     ]
   }
 }
