@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
-        <receiver android:name=".ui.simple.SimpleWidgetReceiver"
+        <receiver android:name=".ui.single.SingleWidgetReceiver"
             android:enabled="@bool/glance_appwidget_available"
             android:exported="true">
             <intent-filter>
@@ -10,7 +10,7 @@
             <!-- 小部件配置信息 -->
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_simple" />
+                android:resource="@xml/widget_single" />
         </receiver>
         <receiver android:name=".ui.week.WeekWidgetReceiver"
             android:enabled="@bool/glance_appwidget_available"

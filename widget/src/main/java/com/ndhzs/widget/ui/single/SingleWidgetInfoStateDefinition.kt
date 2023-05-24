@@ -1,4 +1,4 @@
-package com.ndhzs.widget.ui.simple
+package com.ndhzs.widget.ui.single
 
 import android.content.Context
 import androidx.datastore.core.DataStore
@@ -17,13 +17,13 @@ import java.io.OutputStream
  * @author 985892345
  * @date 2022/11/17 8:43
  */
-internal object SimpleWidgetInfoStateDefinition : GlanceStateDefinition<SimpleWidgetInfo> {
+internal object SingleWidgetInfoStateDefinition : GlanceStateDefinition<SingleWidgetInfo> {
   
-  private val DATA_STORE_FILENAME = SimpleWidgetInfo::class.java.simpleName
+  private val DATA_STORE_FILENAME = SingleWidgetInfo::class.java.simpleName
   
   private val Context.datastore by dataStore(DATA_STORE_FILENAME, OneInfoSerializer)
   
-  override suspend fun getDataStore(context: Context, fileKey: String): DataStore<SimpleWidgetInfo> {
+  override suspend fun getDataStore(context: Context, fileKey: String): DataStore<SingleWidgetInfo> {
     return context.datastore
   }
   
@@ -31,21 +31,21 @@ internal object SimpleWidgetInfoStateDefinition : GlanceStateDefinition<SimpleWi
     return context.dataStoreFile(DATA_STORE_FILENAME)
   }
   
-  object OneInfoSerializer : Serializer<SimpleWidgetInfo> {
+  object OneInfoSerializer : Serializer<SingleWidgetInfo> {
     
-    override val defaultValue: SimpleWidgetInfo
-      get() = SimpleWidgetInfo.Unloaded
+    override val defaultValue: SingleWidgetInfo
+      get() = SingleWidgetInfo.Unloaded
   
-    override suspend fun readFrom(input: InputStream): SimpleWidgetInfo {
+    override suspend fun readFrom(input: InputStream): SingleWidgetInfo {
       return Json.decodeFromString(
-        SimpleWidgetInfo.serializer(),
+        SingleWidgetInfo.serializer(),
         input.readBytes().decodeToString()
       )
     }
   
-    override suspend fun writeTo(t: SimpleWidgetInfo, output: OutputStream) {
+    override suspend fun writeTo(t: SingleWidgetInfo, output: OutputStream) {
       output.use {
-        it.write(Json.encodeToString(SimpleWidgetInfo.serializer(), t).encodeToByteArray())
+        it.write(Json.encodeToString(SingleWidgetInfo.serializer(), t).encodeToByteArray())
       }
     }
   }

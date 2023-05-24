@@ -1,4 +1,4 @@
-package com.ndhzs.widget.ui.simple
+package com.ndhzs.widget.ui.single
 
 import android.content.Context
 import androidx.glance.GlanceId
@@ -6,7 +6,7 @@ import androidx.glance.appwidget.GlanceAppWidgetManager
 import androidx.glance.appwidget.state.updateAppWidgetState
 import androidx.glance.appwidget.updateAll
 import androidx.work.*
-import com.ndhzs.widget.ui.simple.model.SimpleWidgetRepository
+import com.ndhzs.widget.ui.single.model.SingleWidgetRepository
 import java.util.concurrent.TimeUnit
 
 /**
@@ -15,17 +15,17 @@ import java.util.concurrent.TimeUnit
  * @author 985892345
  * 2022/11/17 16:20
  */
-internal class SimpleWidgetWorker(
+internal class SingleWidgetWorker(
   private val context: Context,
   workerParameters: WorkerParameters
 ) : CoroutineWorker(context, workerParameters) {
   
   companion object {
-    private val uniqueWorkName = SimpleWidgetWorker::class.java.simpleName
+    private val uniqueWorkName = SingleWidgetWorker::class.java.simpleName
   
     fun enqueue(context: Context, force: Boolean = false) {
       val manager = WorkManager.getInstance(context)
-      val requestBuilder = PeriodicWorkRequestBuilder<SimpleWidgetWorker>(
+      val requestBuilder = PeriodicWorkRequestBuilder<SingleWidgetWorker>(
         30, TimeUnit.MINUTES
       )
       var workPolicy = ExistingPeriodicWorkPolicy.KEEP
@@ -49,15 +49,15 @@ internal class SimpleWidgetWorker(
   
   override suspend fun doWork(): Result {
     val manager = GlanceAppWidgetManager(context)
-    val glanceIds = manager.getGlanceIds(SimpleWidget::class.java)
+    val glanceIds = manager.getGlanceIds(SingleWidget::class.java)
     return try {
       // Update state to indicate loading
-      setWidgetState(glanceIds, SimpleWidgetInfo.Loading)
+      setWidgetState(glanceIds, SingleWidgetInfo.Loading)
       // Update state with new data
-      setWidgetState(glanceIds, getAvailableSimpleInfo())
+      setWidgetState(glanceIds, getAvailableSingleInfo())
       Result.success()
     } catch (e: Exception) {
-      setWidgetState(glanceIds, SimpleWidgetInfo.Unavailable(e.message.orEmpty()))
+      setWidgetState(glanceIds, SingleWidgetInfo.Unavailable(e.message.orEmpty()))
       if (runAttemptCount < 10) {
         // Exponential backoff strategy will avoid the request to repeat
         // too fast in case of failures.
@@ -71,19 +71,19 @@ internal class SimpleWidgetWorker(
   /**
    * Update the state of all widgets and then force update UI
    */
-  private suspend fun setWidgetState(glanceIds: List<GlanceId>, newState: SimpleWidgetInfo) {
+  private suspend fun setWidgetState(glanceIds: List<GlanceId>, newState: SingleWidgetInfo) {
     glanceIds.forEach { glanceId ->
       updateAppWidgetState(
         context = context,
-        definition = SimpleWidgetInfoStateDefinition,
+        definition = SingleWidgetInfoStateDefinition,
         glanceId = glanceId,
         updateState = { newState }
       )
     }
-    SimpleWidget().updateAll(context)
+    SingleWidget().updateAll(context)
   }
   
-  private suspend fun getAvailableSimpleInfo(): SimpleWidgetInfo.Available {
-    return SimpleWidgetRepository.getAvailable(context)
+  private suspend fun getAvailableSingleInfo(): SingleWidgetInfo.Available {
+    return SingleWidgetRepository.getAvailable(context)
   }
 }

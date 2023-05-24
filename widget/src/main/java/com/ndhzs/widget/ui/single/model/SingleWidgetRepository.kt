@@ -1,4 +1,4 @@
-package com.ndhzs.widget.ui.simple.model
+package com.ndhzs.widget.ui.single.model
 
 import android.content.Context
 import com.ndhzs.widget.CourseWidget
@@ -10,7 +10,7 @@ import com.ndhzs.widget.data.startTimeMinute
 import com.ndhzs.widget.room.WidgetDatabase
 import com.ndhzs.widget.room.WidgetItemContent
 import com.ndhzs.widget.room.WidgetItemDao
-import com.ndhzs.widget.ui.simple.SimpleWidgetInfo.*
+import com.ndhzs.widget.ui.single.SingleWidgetInfo.*
 import com.ndhzs.widget.utils.getNowTimeMinute
 import com.ndhzs.widget.utils.getTodayWeekNumStr
 import java.util.Calendar
@@ -21,7 +21,7 @@ import java.util.Calendar
  * @author 985892345
  * 2023/5/23 14:52
  */
-internal object SimpleWidgetRepository {
+internal object SingleWidgetRepository {
   
   fun getAvailable(context: Context): Available {
     val itemDao = WidgetDatabase.get(context).getItemDao()

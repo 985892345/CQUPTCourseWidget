@@ -6,7 +6,7 @@ import androidx.core.content.edit
 import com.ndhzs.widget.data.IWidgetItem
 import com.ndhzs.widget.data.IWidgetRank
 import com.ndhzs.widget.room.WidgetDatabase
-import com.ndhzs.widget.ui.simple.SimpleWidgetWorker
+import com.ndhzs.widget.ui.single.SingleWidgetWorker
 import com.ndhzs.widget.ui.week.WeekWidgetWorker
 
 /**
@@ -34,7 +34,7 @@ object CourseWidget {
     WidgetDatabase.get(context)
       .getItemDao()
       .replaceAll(data)
-    SimpleWidgetWorker.enqueue(context, true)
+    SingleWidgetWorker.enqueue(context, true)
     WeekWidgetWorker.enqueue(context, true)
   }
   

@@ -1,4 +1,4 @@
-package com.ndhzs.cquptcoursewidget.widghet.simple
+package com.ndhzs.cquptcoursewidget.widghet.single
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.sp
  * @author 985892345
  * 2023/5/23 16:54
  */
-object SimpleWidget {
+object SingleWidget {
   
   @Composable
   fun AvailableContent(
@@ -80,5 +80,5 @@ object SimpleWidget {
 @Preview
 @Composable
 fun ContentPreview() {
-  SimpleWidget.AvailableContent(time = "今日：19:00", title = "唱跳rap篮球", content = "体育场")
+  SingleWidget.AvailableContent(time = "今日：19:00", title = "唱跳rap篮球", content = "体育场")
 }

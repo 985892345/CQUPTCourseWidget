@@ -1,7 +1,6 @@
-package com.ndhzs.widget.ui.simple
+package com.ndhzs.widget.ui.single
 
 import android.content.Context
-import android.util.Log
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 
@@ -11,17 +10,17 @@ import androidx.glance.appwidget.GlanceAppWidgetReceiver
  * @author 985892345
  * 2022/11/16 21:25
  */
-internal class SimpleWidgetReceiver : GlanceAppWidgetReceiver() {
+internal class SingleWidgetReceiver : GlanceAppWidgetReceiver() {
   override val glanceAppWidget: GlanceAppWidget
-    get() = SimpleWidget()
+    get() = SingleWidget()
   
   override fun onEnabled(context: Context) {
     super.onEnabled(context)
-    SimpleWidgetWorker.enqueue(context)
+    SingleWidgetWorker.enqueue(context)
   }
   
   override fun onDisabled(context: Context) {
     super.onDisabled(context)
-    SimpleWidgetWorker.cancel(context)
+    SingleWidgetWorker.cancel(context)
   }
 }

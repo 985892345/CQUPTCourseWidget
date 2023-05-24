@@ -1,4 +1,4 @@
-package com.ndhzs.widget.ui.simple
+package com.ndhzs.widget.ui.single
 
 import android.content.Context
 import androidx.glance.GlanceId
@@ -11,13 +11,13 @@ import androidx.glance.appwidget.action.ActionCallback
  * @author 985892345
  * 2022/11/17 16:44
  */
-internal class SimpleWidgetRefreshAction : ActionCallback {
+internal class SingleWidgetRefreshAction : ActionCallback {
   override suspend fun onAction(
     context: Context,
     glanceId: GlanceId,
     parameters: ActionParameters
   ) {
     // Force the worker to refresh
-    SimpleWidgetWorker.enqueue(context = context, force = true)
+    SingleWidgetWorker.enqueue(context = context, force = true)
   }
 }

@@ -1,4 +1,4 @@
-package com.ndhzs.widget.ui.simple
+package com.ndhzs.widget.ui.single
 
 import kotlinx.serialization.Serializable
 
@@ -9,21 +9,21 @@ import kotlinx.serialization.Serializable
  * @date 2022/11/17 8:36
  */
 @Serializable
-internal sealed interface SimpleWidgetInfo {
+internal sealed interface SingleWidgetInfo {
   
   @Serializable
-  object Unloaded : SimpleWidgetInfo
+  object Unloaded : SingleWidgetInfo
   
   @Serializable
-  object Loading : SimpleWidgetInfo
+  object Loading : SingleWidgetInfo
   
   @Serializable
   data class Available(
     val time: String,
     val title: String,
     val content: String
-  ) : SimpleWidgetInfo
+  ) : SingleWidgetInfo
   
   @Serializable
-  data class Unavailable(val message: String) : SimpleWidgetInfo
+  data class Unavailable(val message: String) : SingleWidgetInfo
 }

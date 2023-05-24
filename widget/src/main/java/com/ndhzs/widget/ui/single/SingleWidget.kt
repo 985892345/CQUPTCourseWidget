@@ -1,4 +1,4 @@
-package com.ndhzs.widget.ui.simple
+package com.ndhzs.widget.ui.single
 
 import android.content.Context
 import androidx.compose.runtime.Composable
@@ -26,13 +26,13 @@ import androidx.glance.unit.ColorProvider
  * @author 985892345
  * @date 2022/11/16 15:35
  */
-internal class SimpleWidget : GlanceAppWidget() {
+internal class SingleWidget : GlanceAppWidget() {
   
   override val stateDefinition: GlanceStateDefinition<*>
-    get() = SimpleWidgetInfoStateDefinition
+    get() = SingleWidgetInfoStateDefinition
   
   override suspend fun provideGlance(context: Context, id: GlanceId) {
-    SimpleWidgetWorker.enqueue(context, true)
+    SingleWidgetWorker.enqueue(context, true)
     provideContent {
       Content()
     }
@@ -40,26 +40,26 @@ internal class SimpleWidget : GlanceAppWidget() {
   
   @Composable
   private fun Content() {
-    when (val simpleInfo = currentState<SimpleWidgetInfo>()) {
-      SimpleWidgetInfo.Unloaded -> {
+    when (val singleInfo = currentState<SingleWidgetInfo>()) {
+      SingleWidgetInfo.Unloaded -> {
         UnloadedContent()
       }
       
-      SimpleWidgetInfo.Loading -> {
+      SingleWidgetInfo.Loading -> {
         Box(contentAlignment = Alignment.Center) {
           CircularProgressIndicator()
         }
       }
       
-      is SimpleWidgetInfo.Available -> {
+      is SingleWidgetInfo.Available -> {
         AvailableContent(
-          time = simpleInfo.time,
-          title = simpleInfo.title,
-          content = simpleInfo.content
+          time = singleInfo.time,
+          title = singleInfo.title,
+          content = singleInfo.content
         )
       }
       
-      is SimpleWidgetInfo.Unavailable -> {
+      is SingleWidgetInfo.Unavailable -> {
         UnavailableContent()
       }
     }
@@ -71,7 +71,7 @@ internal class SimpleWidget : GlanceAppWidget() {
       text = "点击刷新课表",
       modifier = GlanceModifier
         .background(Color.Transparent)
-        .clickable(actionRunCallback<SimpleWidgetRefreshAction>()),
+        .clickable(actionRunCallback<SingleWidgetRefreshAction>()),
       style = TextStyle(
         color = ColorProvider(Color.White),
         fontSize = 26.sp
@@ -91,7 +91,7 @@ internal class SimpleWidget : GlanceAppWidget() {
         .wrapContentHeight()
         .background(Color.Transparent)
         .padding(horizontal = 10.dp)
-        .clickable(actionRunCallback<SimpleWidgetRefreshAction>()),
+        .clickable(actionRunCallback<SingleWidgetRefreshAction>()),
       verticalAlignment = Alignment.CenterVertically
     ) {
       Text(
@@ -137,7 +137,7 @@ internal class SimpleWidget : GlanceAppWidget() {
         .wrapContentWidth()
         .fillMaxHeight()
         .background(Color.Transparent)
-        .clickable(actionRunCallback<SimpleWidgetRefreshAction>()),
+        .clickable(actionRunCallback<SingleWidgetRefreshAction>()),
       verticalAlignment = Alignment.CenterVertically
     ) {
       Text(
