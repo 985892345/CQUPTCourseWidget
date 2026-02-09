@@ -7,7 +7,6 @@ import com.ndhzs.widget.data.IWidgetItem
 import com.ndhzs.widget.data.IWidgetRank
 import com.ndhzs.widget.room.WidgetDatabase
 import com.ndhzs.widget.ui.single.SingleWidgetWorker
-import com.ndhzs.widget.ui.week.WeekWidgetWorker
 
 /**
  * .
@@ -35,7 +34,6 @@ object CourseWidget {
       .getItemDao()
       .replaceAll(data)
     SingleWidgetWorker.enqueue(context, true)
-    WeekWidgetWorker.enqueue(context, true)
   }
   
   /*

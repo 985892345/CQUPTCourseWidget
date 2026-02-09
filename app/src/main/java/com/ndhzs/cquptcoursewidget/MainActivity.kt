@@ -1,5 +1,6 @@
 package com.ndhzs.cquptcoursewidget
 
+import android.graphics.Color
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -10,10 +11,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.lifecycle.lifecycleScope
 import com.ndhzs.cquptcoursewidget.theme.ComposeTestTheme
 import com.ndhzs.cquptcoursewidget.widghet.week.ContentPreview
+import com.ndhzs.widget.CourseWidget
 import com.ndhzs.widget.data.IWidgetItem
 import com.ndhzs.widget.data.IWidgetRank
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,24 +33,24 @@ class MainActivity : ComponentActivity() {
     }
     
     
-//    lifecycleScope.launch(Dispatchers.IO) {
-//      CourseWidget.setData(
-//        this@MainActivity,
-//        14,
-//        mapOf(
-//          WidgetRank(0, Color.Yellow.toArgb(), Color.Black.toArgb()) to listOf(
-//            WidgetData(
-//              14,
-//              IWidgetItem.WeekNum.Tue,
-//              IWidgetItem.Start.Lesson9,
-//              2,
-//              "软件分析与设计",
-//              "B411/B412"
-//            )
-//          )
-//        )
-//      )
-//    }
+    lifecycleScope.launch(Dispatchers.IO) {
+      CourseWidget.setData(
+        this@MainActivity,
+        14,
+        mapOf(
+          WidgetRank(0, Color.YELLOW, Color.BLACK) to listOf(
+            WidgetData(
+              14,
+              IWidgetItem.WeekNum.Tue,
+              IWidgetItem.Start.Lesson9,
+              2,
+              "软件分析与设计",
+              "B411/B412"
+            )
+          )
+        )
+      )
+    }
   }
   
   data class WidgetRank(

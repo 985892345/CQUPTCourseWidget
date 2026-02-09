@@ -12,16 +12,5 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/widget_single" />
         </receiver>
-        <receiver android:name=".ui.week.WeekWidgetReceiver"
-            android:enabled="@bool/glance_appwidget_available"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-            </intent-filter>
-            <!-- 小部件配置信息 -->
-            <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_week" />
-        </receiver>
     </application>
 </manifest>

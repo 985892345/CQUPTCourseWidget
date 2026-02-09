@@ -83,7 +83,7 @@ internal class SingleWidgetWorker(
     SingleWidget().updateAll(context)
   }
   
-  private suspend fun getAvailableSingleInfo(): SingleWidgetInfo.Available {
+  private fun getAvailableSingleInfo(): SingleWidgetInfo.Available {
     return SingleWidgetRepository.getAvailable(context)
   }
 }
